@@ -1,0 +1,42 @@
+
+@startuml
+title Project class diagram - Forecast & Replace APIs
+
+class TextReplaceController {
+  +replace(String): ResponseEntity<String>
+}
+
+class ForcastController {
+  +post(ForcastRequest): ResponseEntity<ForecastRecord>
+}
+
+class ForcastService {
+  +fetchAndStore(boolean, boolean, boolean): ForecastRecord
+  -findMax(JsonNode): Double
+}
+
+class ForecastRecord {
+  -id: Long
+  -date: LocalDate
+  -maxTemperature: Double
+  -maxHumidity: Double
+  -maxWindSpeed: Double
+}
+
+class ForcastRequest {
+  -addTemprature: Boolean
+  -addHumidity: Boolean
+  -addWindSpeed: Boolean
+}
+
+class ForecastRecordRepository {
+  +save(ForecastRecord): ForecastRecord
+  +findAll(): List<ForecastRecord>
+}
+
+TextReplaceController --> ForcastService : uses (no)
+ForcastController --> ForcastService : uses
+ForcastService --> ForecastRecordRepository : persists
+ForcastController --> ForcastRequest : consumes
+ForcastController --> ForecastRecord : returns
+@enduml
