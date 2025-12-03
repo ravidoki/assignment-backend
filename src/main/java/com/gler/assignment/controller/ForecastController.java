@@ -4,6 +4,7 @@ import com.gler.assignment.dto.ForecastRequest;
 import com.gler.assignment.model.ForecastRecord;
 import com.gler.assignment.service.ForecastService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,19 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1")
-@io.swagger.v3.oas.annotations.tags.Tag(name = "Forecast", description = "Forecast and weather related operations")
+@Tag(name = "Forecast", description = "Forecast and weather related operations")
 @Slf4j
 public class ForecastController {
 
     /** Service for handling forecast operations */
-    private final ForecastService svc;
+    private final ForecastService forecastService;
 
     /**
      * Constructor for dependency injection.
-     * @param s the forecast service
+     * @param forecastService the forecast service
      */
-    public ForecastController(ForecastService s) {
-        this.svc = s;
+    public ForecastController(ForecastService forecastService) {
+        this.forecastService = forecastService;
     }
 
     /**
@@ -47,7 +48,7 @@ public class ForecastController {
                 request.getAddTemprature(), request.getAddHumidity(), request.getAddWindSpeed());
 
         // Delegate to service layer for business logic
-        ForecastRecord result = svc.fetchAndStore(request.getAddTemprature(), request.getAddHumidity(), request.getAddWindSpeed());
+        ForecastRecord result = forecastService.fetchAndStore(request.getAddTemprature(), request.getAddHumidity(), request.getAddWindSpeed());
 
         // Log successful completion
         log.info("Successfully processed forecast request, stored record with ID: {}", result.getId());

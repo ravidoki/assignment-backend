@@ -130,21 +130,15 @@ public class ForcastSteps {
                     Boolean.valueOf(this.tempRaw), Boolean.valueOf(this.humRaw), Boolean.valueOf(this.windRaw));
         }
 
-        // <-- ADD THIS DIAGNOSTIC LOGGING (important)
         // HTTP POST request details for testing
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> req = new HttpEntity<>(body, headers);
         this.response = restTemplate.postForEntity(url, req, String.class);
 
-        // log response too
-        // HTTP response details for testing verification
-
         // hand over to shared assertions
         sharedSteps.setResponse(this.response);
     }
-
 
     // helper: treat quoted values as JSON strings, unquoted as booleans
     private static boolean isQuoted(String s) {
